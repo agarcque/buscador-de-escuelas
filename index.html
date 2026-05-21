@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Buscador de escuelas y centros de trabajo educativos en Mexico."
+    />
+    <title>Buscador de Escuelas en Mexico</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <a class="brand" href="#" aria-label="Inicio">
+          <span class="brand-mark" aria-hidden="true">BE</span>
+          <span>
+            <strong>Buscador de Escuelas</strong>
+            <small>Catalogo nacional de centros educativos</small>
+          </span>
+        </a>
+        <div class="header-actions">
+          <button class="icon-button" id="themeToggle" type="button" aria-label="Cambiar tema">
+            <span aria-hidden="true">◐</span>
+          </button>
+          <a class="ghost-button" href="#dataLoader">Datos CSV</a>
+        </div>
+      </header>
+
+      <main class="shell">
+        <section class="search-panel" aria-labelledby="searchTitle">
+          <div>
+            <p class="eyebrow">Consulta rapida</p>
+            <h1 id="searchTitle">Encuentra escuelas por nombre, CCT o ubicacion.</h1>
+          </div>
+
+          <form class="search-box" id="searchForm" role="search">
+            <label class="sr-only" for="searchInput">Buscar escuela o CCT</label>
+            <input
+              id="searchInput"
+              name="search"
+              type="search"
+              autocomplete="off"
+              placeholder="Busca por nombre de escuela o CCT"
+            />
+            <button class="primary-button" type="submit">Buscar</button>
+          </form>
+
+          <div class="quick-filters" aria-label="Filtros rapidos">
+            <button class="chip active" type="button" data-quick="active">Activos</button>
+            <button class="chip" type="button" data-quick="public">Publicos</button>
+            <button class="chip" type="button" data-quick="private">Privados</button>
+            <button class="chip" type="button" data-quick="map">Con coordenadas</button>
+          </div>
+        </section>
+
+        <section class="status-strip" aria-live="polite">
+          <div>
+            <strong id="resultCount">0 centros encontrados</strong>
+            <span id="dataStatus">Esperando carga de datos CSV</span>
+          </div>
+          <div class="view-toggle" role="tablist" aria-label="Vista de resultados">
+            <button class="view-button active" id="listViewButton" type="button" role="tab">
+              Lista
+            </button>
+            <button class="view-button" id="mapViewButton" type="button" role="tab">Mapa</button>
+          </div>
+        </section>
+
+        <section class="workspace">
+          <aside class="filters" aria-label="Filtros de busqueda">
+            <div class="filters-head">
+              <h2>Filtros</h2>
+              <button class="text-button" id="clearFilters" type="button">Limpiar</button>
+            </div>
+
+            <label>
+              Estado
+              <select id="stateFilter">
+                <option value="">Todos los estados</option>
+              </select>
+            </label>
+
+            <label>
+              Municipio
+              <select id="municipalityFilter">
+                <option value="">Todos los municipios</option>
+              </select>
+            </label>
+
+            <label>
+              Nivel educativo
+              <select id="levelFilter">
+                <option value="">Todos los niveles</option>
+              </select>
+            </label>
+
+            <label>
+              Tipo de centro
+              <select id="typeFilter">
+                <option value="">Todos los tipos</option>
+              </select>
+            </label>
+
+            <label>
+              Control
+              <select id="controlFilter">
+                <option value="">Publico y privado</option>
+                <option value="PUBLICO">Publico</option>
+                <option value="PRIVADO">Privado</option>
+              </select>
+            </label>
+
+            <label class="toggle-row">
+              <input id="includeInactive" type="checkbox" />
+              <span>Incluir inactivos</span>
+            </label>
+
+            <div class="data-loader" id="dataLoader">
+              <h3>Archivos CSV</h3>
+              <p>
+                La app intentara cargar automaticamente los dos catalogos desde
+                <code>/data</code>. Tambien puedes seleccionarlos manualmente.
+              </p>
+              <input id="csvFiles" type="file" accept=".csv,text/csv" multiple />
+            </div>
+          </aside>
+
+          <section class="results-area" aria-label="Resultados">
+            <div class="results-list" id="resultsList"></div>
+            <div class="empty-state" id="emptyState">
+              <strong>Aun no hay resultados para mostrar.</strong>
+              <span>Carga los CSV o ajusta tu busqueda para iniciar la consulta.</span>
+            </div>
+            <div class="map-panel" id="mapPanel" hidden>
+              <div id="map"></div>
+            </div>
+          </section>
+
+          <aside class="detail-panel" id="detailPanel" aria-label="Detalle de escuela">
+            <div class="detail-empty">
+              <span>Selecciona una escuela</span>
+              <p>Veras aqui la informacion completa disponible del centro de trabajo.</p>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      crossorigin=""
+    ></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
